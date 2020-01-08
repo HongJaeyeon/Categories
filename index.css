@@ -34,14 +34,6 @@
     display: none;
 }
 
-#dropdown.active{
-    display: block;
-}
-
-#dropdown2.active{
-    display: block;
-}
-
-#dropdown3.active{
+#dropdown.active, #dropdown2.active, #dropdown3.active{
     display: block;
 }
