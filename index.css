@@ -1,43 +1,38 @@
-nav{
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 30px;
-    padding-left: 30px;
-}
-
-#menu1{
-    background-color: white;
-}
-#menu10{
-    background-color: cornflowerblue;
-}
-#menu13{
-    background-color: powderblue;
-}
-
-.menu-btn > li{
+#menu-1,#menu-12{
+    background-color : cornflowerblue;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
     display: inline-block;
-    background-color: lightgray;
-    padding: 10px 80px;
-    /*transform: all 0.8s ease;*/
+    font-size: 16px;
 }
-.menu-btn li:hover {
-    cursor: pointer;
-    background-color: coral;
-}
-
-
-
-
-
-
-ul{
-    list-style: none;
+#menu-10, #menu-13{
+    background-color : coral;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }
 
-#dropdown{
+#menu-11{
+    background-color : gray;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
+
+   #dropdown{
     display: none;
 }
 
