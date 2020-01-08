@@ -30,15 +30,7 @@
     font-size: 16px;
 }
 
-#dropdown{
-    display: none;
-}
-
-#dropdown2{
-    display: none;
-}
-
-#dropdown3{
+#dropdown, #dropdown2, #dropdown3 {
     display: none;
 }
 
