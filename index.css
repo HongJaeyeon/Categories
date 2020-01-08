@@ -1,0 +1,62 @@
+nav{
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+#menu1{
+    background-color: white;
+}
+#menu10{
+    background-color: cornflowerblue;
+}
+#menu13{
+    background-color: powderblue;
+}
+
+.menu-btn > li{
+    display: inline-block;
+    background-color: lightgray;
+    padding: 10px 80px;
+    /*transform: all 0.8s ease;*/
+}
+.menu-btn li:hover {
+    cursor: pointer;
+    background-color: coral;
+}
+
+
+
+
+
+
+ul{
+    list-style: none;
+}
+
+#dropdown{
+    display: none;
+}
+
+#dropdown2{
+    display: none;
+}
+
+#dropdown3{
+    display: none;
+}
+
+#dropdown.active{
+    display: block;
+}
+
+#dropdown2.active{
+    display: block;
+}
+
+#dropdown3.active{
+    display: block;
+}
