@@ -1,39 +1,18 @@
-#menu-1,#menu-12{
-    background-color : cornflowerblue;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-#menu-10, #menu-13{
-    background-color : coral;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+.first-group button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 50%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
 }
 
-#menu-11{
-    background-color : gray;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+.first-group button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
 }
 
-#dropdown, #dropdown2, #dropdown3{
-    display: none;
-}
-
-#dropdown.active, #dropdown2.active, #dropdown3.active{
-    display: block;
+/* Add a background color on hover */
+.first-group button:hover {
+    background-color: #3e8e41;
 }
