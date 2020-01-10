@@ -13,7 +13,6 @@ window.addEventListener("load", function(){
         for (var i = 0; i < categories.categoryResponses.length; i++) {
             var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
             var cloneNode = document.importNode(template.content,true); //template의 내용을 deep하게 (자손까지) 가져옴
-            console.log("Test:cloneNode:",cloneNode);
             var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
             console.log("Test:button:",button);
             button.value = "NO."+ categories.categoryResponses[i].categoryNo; //input의 value를 categories.categoryResponses[i].categoryNo으로 변경
