@@ -70,7 +70,7 @@ window.addEventListener("load", function(){
                 //서브 메뉴 버튼이 눌렸을 때
                 for (var i = 0; i < categories.categoryResponses.length; i++) {
                     for (var j = 0; j < categories.categoryResponses[i].children.length; j++) {
-                        if (e.target.id == i) {
+                        if (e.target.id == j) {
                             for (var k = 0; k < eval("subsubList" + k).length; k++) {
                                 var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
                                 var cloneNode = document.importNode(template.content, true); //template의 내용을 deep하게 (자손까지) 가져옴
