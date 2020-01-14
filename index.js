@@ -10,7 +10,7 @@ window.addEventListener("load", function(){
         }
 
         //부모 메뉴 버튼 생성
-        for (var i = 0; i < categories.categoryResponses.length; i++) {
+        for (var i=0; i < categories.categoryResponses.length; i++) {
             var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
             var cloneNode = document.importNode(template.content,true); //template의 내용을 deep하게 (자손까지) 가져옴
             var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
@@ -24,19 +24,28 @@ window.addEventListener("load", function(){
         }
 
         //서브 메뉴 버튼 생성
-        for (var i = 0; i < categories.categoryResponses.length; i++) {
-            for (var j = 0; j<categories.categoryResponses[i].children.length; j++) {
-                console.log("Test: i:",i,",j:",j);
-                var tmp = categories.categoryResponses[i].children[j].categoryNo; //해당 부모.해당 자식의 categoryNo 값을 임시 저장
-                eval("subList"+i+".push(tmp)"); //해당 부모의 리스트에 담음
-                console.log("Test: subList0",subList0,"subList1",subList1);
-
+        for (var i=0; i < categories.categoryResponses.length; i++){
+            for (var j=0; j<categories.categoryResponses[i].children.length; j++){
+                    var tmp = categories.categoryResponses[i].children[j].categoryNo; //해당 부모.해당 자식의 categoryNo 값을 임시 저장
+                    eval("subList"+i+".push(tmp)"); //해당 부모의 리스트에 담음
+                    console.log("Test: subList0",subList0,"subList1",subList1);
+                    eval("var subsubList"+j+"=[]");//각자의 자식을 구분해 담기 위해 가변 변수명 사용하여 배열 만듦
             }
          }
-        function f() {
-                console.log("Test:click","parentsBtn"+i);
-        }
-        //
+
+        //서브-서브 메뉴 버튼 생성
+        for (var i=0; i<categories.categoryResponses.length; i++){
+                for (var j=0; j<categories.categoryResponses[i].children.length; j++){
+                    for (var k=0; k<categories.categoryResponses[i].children[j].children.length; k++){
+                        var subtmp = categories.categoryResponses[i].children[j].children[k].categoryNo;
+                        eval("subsubList" + j + ".push(subtmp)");
+                        console.log("Test1: subsubList0", subsubList0);
+                    }
+                }
+        }//if문 수정 - 다음 카테고리가 없을 경우 어떻게? 그냥 뛰어 넘어 버리면 무엇이 무엇의 리스트인지 모르는데
+
+
+
         // for (var i = 0; i < categories.categoryResponses.length; i++) {
         //     var tmpParentsBtn = eval("parentsBtn"+n);
         //     console.log("Test:tmpParentsBtn:",tmpParentsBtn);
@@ -50,29 +59,17 @@ window.addEventListener("load", function(){
         //     }
 
         // //부모 메뉴 버튼이 눌렸을 때
-        // for(var n=0; n<categories.categoryResponses.length; n++){
-        //     var tmpParentsBtn = eval("parentsBtn"+n);
-        //     console.log("Test:tmpParentsBtn:",tmpParentsBtn);
-        //     tmpParentsBtn.onclick = function(){
-        //         console.log("Test:click",tmpParentsBtn);
-        //         // for (var m=0; m<eval("subList"+ n-1 +".length"); m++){
-        //         //     button.value = "NO." + eval("subList"+i+"[m]");
-        //         //     menus.append(button);
-        //         }
-        //     }
+        for(var n=0; n<categories.categoryResponses.length; n++){
+            var tmpParentsBtn = eval("parentsBtn"+n);
+            console.log("Test:tmpParentsBtn:",tmpParentsBtn);
+            tmpParentsBtn.onclick = function(){
+                console.log("Test:click",tmpParentsBtn);
+                // for (var m=0; m<eval("subList"+ n-1 +".length"); m++){
+                //     button.value = "NO." + eval("subList"+i+"[m]");
+                //     menus.append(button);
+                }
+            }
 
-        // //서브-서브 메뉴 버튼 생성
-        //
-        // // for (var i = 0; i < categories.categoryResponses.length; i++) {
-        // //     for (var j = 0; j<categories.categoryResponses[i].children.length; j++) {
-        // //         for (var k = 0; k<categories.categoryResponses[i].children[j].length; k++){
-        // //             console.log("Test: i:",i,",j:",j);
-        // //             var tmp = categories.categoryResponses[i].children[j].categoryNo; //해당 부모.해당 자식의 categoryNo값을 임시 저장
-        // //             eval("subList"+i+".push(tmp)"); //해당 부모의 리스트에 담음
-        // //             console.log("Test: subList0",subList0,"subList1",subList1);
-        // //         }
-        // //     }
-        // }
 
         //서브 메뉴 버튼이 눌렸을 때
 
