@@ -61,7 +61,7 @@ window.addEventListener("load", function(){
                             var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
                             button.value = "NO." + eval("subList" + i)[j];
                             menus.append(button);
-                            button.id = eval("1_" + i);
+                            console.log("button",button);
                             button.setAttribute("categoryno", eval("subList" + i)[j]);
                         }
                     }
