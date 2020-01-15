@@ -19,6 +19,7 @@ window.addEventListener("load", function(){
 
             button.value = "NO." + categories.categoryResponses[i].categoryNo; //input의 value를 categories.categoryResponses[i].categoryNo으로 변경
             button.id = i;
+            button.name = "parent";
             button.setAttribute("categoryno", categories.categoryResponses[i].categoryNo);
             menus.append(button);
 
@@ -54,14 +55,17 @@ window.addEventListener("load", function(){
             if (e.target.tagName === "INPUT") {//menus가 다 나오는 것 거르는 조건
                 // console.log(e.target.getAttribute("categoryno"));
                 for (var i = 0; i < categories.categoryResponses.length; i++) {
-                    if (e.target.id == i) {
+                    if (e.target.name == "parent" && e.target.id == i) {
+                        console.log("e.target.id",e.target.id);
                         for (var j = 0; j < eval("subList" + i).length; j++) {
                             var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
                             var cloneNode = document.importNode(template.content, true); //template의 내용을 deep하게 (자손까지) 가져옴
                             var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
                             button.value = "NO." + eval("subList" + i)[j];
+                            button.id = "i";
+                            button.name = "sub";
                             menus.append(button);
-                            console.log("button",button);
+                            console.log("부모 메뉴 버튼이 눌렸을 때 button 값", button); // 그 자식 버튼 값이 들어옴
                             button.setAttribute("categoryno", eval("subList" + i)[j]);
                         }
                     }
@@ -70,14 +74,14 @@ window.addEventListener("load", function(){
                 //서브 메뉴 버튼이 눌렸을 때
                 for (var i = 0; i < categories.categoryResponses.length; i++) {
                     for (var j = 0; j < categories.categoryResponses[i].children.length; j++) {
-                        if (e.target.id == j) {
-                            for (var k = 0; k < eval("subsubList" + k).length; k++) {
+                        if (e.target.name == "sub" && e.target.id == j) {
+                            for (var k = 0; k < eval("subsubList" + j).length; k++) {
                                 var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
                                 var cloneNode = document.importNode(template.content, true); //template의 내용을 deep하게 (자손까지) 가져옴
                                 var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
                                 button.value = "NO." + eval("subsubList" + j)[k];
-                                menus.append(button);
                                 button.id = eval("1_" + k);
+                                menus.append(button);
                                 button.setAttribute("categoryno", eval("subList" + j)[k]);
                             }
                         }
