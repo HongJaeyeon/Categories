@@ -1,18 +1,86 @@
-.first-group button {
-    background-color: #4CAF50; /* Green background */
-    border: 1px solid green; /* Green border */
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    width: 50%; /* Set a width if needed */
-    display: block; /* Make the buttons appear below each other */
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.first-group button:not(:last-child) {
-    border-bottom: none; /* Prevent double borders */
+.black_overlay {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);
 }
 
-/* Add a background color on hover */
-.first-group button:hover {
-    background-color: #3e8e41;
+.popup {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 240px;
+    height: 25px;
+    padding: 16px;
+    border: 8px solid black;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+}
+
+.grid_wrap {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 400px);
+    grid-gap: 24px;
+}
+
+#sec1,#sec2,#sec3 {
+    border: 1px black solid;
+    height: 350px;
+    width: 400px;
+    overflow: scroll;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: large;
+    
+}
+
+table,td {
+    border-bottom: 1px solid black;
+}
+
+td {
+    padding: 10px;
+}
+
+thead:nth-child(1) {
+    background-color: black;
+    color: #fff;
+}
+
+.button_wrap {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.button_wrap > input{
+    width: 150px;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 15px;
+    background: #fff;
+    border: 2px solid black;
 }

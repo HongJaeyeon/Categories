@@ -1,82 +1,91 @@
+
 window.addEventListener("load", function(){
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest;
+    var section1 = document.querySelector("#sec1");
+    var section2 = document.querySelector("#sec2");
+    var section3 = document.querySelector("#sec3");
+    var noticeList = section1.querySelector(".notice-list");
+    var noticeList2 = section2.querySelector(".notice-list");
+    var noticeList3 = section3.querySelector(".notice-list");
+    var tbodyNode = noticeList.querySelector("#sec1 tbody");
+    var tbodyNode2 = noticeList2.querySelector("#sec2 tbody");
+    var tbodyNode3 = noticeList3.querySelector("#sec3 tbody");
+    var body = document.querySelector('body');
     xhr.open('GET', 'http://220.85.155.13:5187/categories', true);
+    let categories = {};
     xhr.onload = function() {
-        if (this.status === 200) {
-            categories = JSON.parse(this.responseText);
-            console.log("Test:This is working");
-            console.log("A",categories.categoryResponses);
+        if(this.status === 200) {
+            JSON.parse(this.responseText);
         }
-        //부모 메뉴 버튼 생성
-        for (var i = 0; i < categories.categoryResponses.length; i++) {
-            var template = document.querySelector("template"); //html의 template를 가져와 js의 template변수에 넣음
-            var cloneNode = document.importNode(template.content, true); //template의 내용을 deep하게 (자손까지) 가져옴
-            var button = cloneNode.querySelector("input"); //template의 내용을 받아온 cloneNode에서 button 태그를 찾음
-            var menus = document.querySelector("menus"); //value값을 변경시킨 button을 append(template 밖에 노드를 추가함으로서 화면에 보이게)할 곳
-            button.value = "NO." + categories.categoryResponses[i].categoryNo; //input의 value를 categories.categoryResponses[i].categoryNo으로 변경
-            button.id = i;
-            button.name = "parent";
-            button.setAttribute("categoryno", categories.categoryResponses[i].categoryNo);
-            menus.append(button);
-            console.log("parent_button:",i, button);
-            eval("var subList" + i + "=[]");//각자의 자식을 구분해 담기 위해 가변 변수명 사용하여 배열 만듦
-        }
-        //서브 메뉴 categoryNo값 리스트 생성
-        for (var i = 0; i < categories.categoryResponses.length; i++) {
-            for (var j = 0; j < categories.categoryResponses[i].children.length; j++) {
-                eval("subList" + i + ".push(categories.categoryResponses[i].children[j].categoryNo)"); //해당 부모의 리스트에 담음
-                console.log("subList0", subList0, "subList1", subList1,"subList2",subList2,"subList6",subList6);
-                eval("var subsubList" + i + "=[]");
-            }
-        }
-        //서브-서브 메뉴 categoryNo값 리스트 생성
-        for (var i = 0; i < categories.categoryResponses.length; i++) {
-            for (var j = 0; j < categories.categoryResponses[i].children.length; j++) {
-                for (var k = 0; k < categories.categoryResponses[i].children[j].children.length; k++) {
-                    eval("subsubList" + i + ".push(categories.categoryResponses[i].children[j].children[k].categoryNo)");
-                    console.log("subsubList0", subsubList0,"subsubList1",subsubList1, "subsubList6", subsubList6);
-                }
-            }
-        }
-        //버튼 클릭 시 서브 메뉴 생성 및 서브-서브 버튼 생성
-        menus.onclick = function (e) {
-            if (e.target.tagName === "INPUT") {//menus가 다 나오는 것 거르는 조건
-                console.log("e.target:",e.target);
-                // //부모 메뉴 버튼 눌렀을 때
-                for (var i = 0; i < categories.categoryResponses.length; i++) {
-                    if (e.target.name == "parent" && e.target.id == i) {
-                        for (var j = 0; j < eval("subList" + i).length; j++) {
-                            var template = document.querySelector("template");
-                            var cloneNode = document.importNode(template.content, true);
-                            var button = cloneNode.querySelector("input");
-                            button.value = "NO." + eval("subList" + i)[j];
-                            button.id = j;
-                            button.name = "sub";
-                            button.setAttribute("categoryno", eval("subList" + i)[j]);
-                            menus.append(button);
+        categories = (JSON.parse(this.responseText) || {}).categoryResponses || {};
 
-                        }
+
+        function initCategoryBodyBox(depth) {
+            let arrNumber = [];
+            for (let i = 0; i < 3; i++){
+                arrNumber[i] = i + 1;
+            }
+            const itemToFind = arrNumber.find(function(item) {
+                return item === parseInt(depth);
+            })
+            const idx = arrNumber.indexOf(itemToFind);
+            if (idx > -1) arrNumber.splice(idx, 1);
+            arrNumber.forEach(arrayIndex => {
+                if(depth < parseInt(arrayIndex)) {
+                    let targetTbodyNode = body.querySelector("#sec" + (arrayIndex) + " tbody");
+                    if(targetTbodyNode.rows.length > 0) {
+                        targetTbodyNode.querySelector('tr').remove();
                     }
                 }
-                //서브 메뉴 버튼 눌렀을 때
-                for (var i = 0; i < categories.categoryResponses.length; i++) {
-                    for (var j = 0; j < categories.categoryResponses[i].children.length; j++) {
-                        if (e.target.name == "sub" && e.target.id == j) {
-                            for (var k = 0; k < eval("subsubList" + j).length; k++) {
-                                var template = document.querySelector("template");
-                                var cloneNode = document.importNode(template.content, true);
-                                var button = cloneNode.querySelector("input");
+            })
+        }
+        function insert(targetCategories, depth) { //메뉴 넣는 함수
+            initCategoryBodyBox(depth);
+            var targetTbodyNode = body.querySelector("#sec" + (depth + 1) + " tbody");
+            targetTbodyNode.setAttribute('depth', (depth + 1));
+            for(var i=0; i<targetCategories.length; i++) {
+                var cloneNode = document.importNode(thumbnailCategory.content, true);
+                var tds = cloneNode.querySelectorAll("td");
+                var trs =  cloneNode.querySelectorAll("tr");
+                var categroyNo = targetCategories[i].categoryNo;
+                trs[0].setAttribute( 'categroyNo', categroyNo);
+                tds[0].textContent = targetCategories[i].categoryNo;
+                tds[1].textContent = targetCategories[i].name;
+                targetTbodyNode.appendChild(cloneNode);
+            }
+            addOnclickCategory(targetTbodyNode, (depth + 1));
+        }
+        insert(categories, 0);
 
-                                button.value = "NO." + eval("subsubList" + j)[k];
-                                button.id = k;
-                                button.setAttribute("categoryno", eval("subList" + j)[k]);
-                                menus.append(button);
-                            }
-                        }
+        function recursive(category, categoryNo) {
+            let k = 0;
+            let len = category.length;
+            for (; k < len ; k++ ) {
+                let targetCategory = category[k]; //비교할 대상인 targetCategory(k가 돌아가 순차적으로 앞에서부터 찾음)
+                if(targetCategory.categoryNo === categoryNo) return targetCategory;
+                //k값이 돌아가면서 현재 k값에서의 categoryNO과 매개인자로 넣은 (찾고자하는) 그 categoryNO과 같은지 비교해서 같으면 해당 카테고리를 출력시킨다.
+                else if(targetCategory['children']) {
+                    let result =  recursive(targetCategory['children'], categoryNo);
+                    //찾는다면 if문을 나가고, 못 찾으면 elseif로 들어옴. 그러면 children이 true인지 (자식이 있는지) 걸러냄
+                    if (result !== false) {
+                        return result; //다시 자기 자신을 호출 시켜 result 값에 넣음
                     }
                 }
             }
+            return false;
         }
-    }
+
+        function addOnclickCategory(tbodyNode, depth) {
+            tbodyNode.onclick = function(e) {
+                if(e.target.nodeName === 'TD') {
+                    var targetCategroyNo = e.target.parentElement.getAttribute('categroyNo');
+                    var targetCategory = recursive(categories, parseInt(targetCategroyNo));
+                    var targetDepth = e.target.closest('tbody').getAttribute('depth');
+                    if(targetCategory.children.length > 0) insert(targetCategory.children, parseInt(targetDepth));
+                    //자식이 있으면 insert 함수로 보내서 메뉴로 생성되게 함
+                }
+            }
+        }
+    };
     xhr.send();
 });
