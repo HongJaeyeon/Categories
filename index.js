@@ -1,4 +1,3 @@
-
 window.addEventListener("load", function(){
     let xhr = new XMLHttpRequest;
     var section1 = document.querySelector("#sec1");
@@ -7,9 +6,6 @@ window.addEventListener("load", function(){
     var noticeList = section1.querySelector(".notice-list");
     var noticeList2 = section2.querySelector(".notice-list");
     var noticeList3 = section3.querySelector(".notice-list");
-    var tbodyNode = noticeList.querySelector("#sec1 tbody");
-    var tbodyNode2 = noticeList2.querySelector("#sec2 tbody");
-    var tbodyNode3 = noticeList3.querySelector("#sec3 tbody");
     var body = document.querySelector('body');
     xhr.open('GET', 'http://220.85.155.13:5187/categories', true);
     let categories = {};
@@ -19,6 +15,7 @@ window.addEventListener("load", function(){
         }
         categories = (JSON.parse(this.responseText) || {}).categoryResponses || {};
 
+        console.log("수정 전", categories);
 
         function initCategoryBodyBox(depth) {
             let arrNumber = [];
@@ -83,9 +80,57 @@ window.addEventListener("load", function(){
                     var targetDepth = e.target.closest('tbody').getAttribute('depth');
                     if(targetCategory.children.length > 0) insert(targetCategory.children, parseInt(targetDepth));
                     //자식이 있으면 insert 함수로 보내서 메뉴로 생성되게 함
+                    console.log("e.target.parentElement",e.target.parentElement); //임의로 no과 name을 담도록 만든 테이블
+                    console.log("targetCategory",targetCategory);  //실제로 api로 온 값을 저장한 객체
+                    changeName(e.target.parentElement, targetCategory);
                 }
             }
         }
-    };
+    }
+
+    function changeName(thisTd,targetCategory) { //e.target.parentElement === this
+        thisTd.ondblclick = function() {
+
+            console.log("this",this);
+
+            var nameText = this;
+            var overlay = body.querySelector('.black_overlay');
+            var popup = body.querySelector('.popup');
+            var btns = body.querySelector('#button');
+            var pushText = body.querySelector('#pushtext');
+
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+
+            btns.onclick = function() {
+                nameText.children[1].textContent = pushText.value; //nameText는 this를 받음. this는 e.target.parentElement와 같고
+                //임의로 필요한 (출력할) categoryNo, name값만 가져온게 e.target.parentElement임, nameText.children[1].textContent는 name이 있는 곳임
+                popup.style.display = 'none';
+                overlay.style.display = 'none';
+                targetCategory.name = pushText.value; //textContent 값 뿐만 아니라 targetCategory값도 바꿔줌
+                pushText.value = null; //그리고 null로 초기화 시킴
+
+                console.log("targetCategory",targetCategory);
+                console.log("categoires",categories);
+
+                changeData();
+            }
+        }
+    }
+
+    function changeData() {
+        var changeButton = document.querySelector(".change-button");
+        changeButton.onclick = function(e) {
+
+            var xhr1 = new XMLHttpRequest();
+
+            xhr1.open("POST", "http://220.85.155.13:5187/categories");
+            //GET 방식은 받아올 때, POST방식은 내가 올릴 때. 받아온 api를 수정해서 다시 올려야 하므로 같은 url 입력함.
+            xhr1.setRequestHeader("Content-Type", "application/json"); // Header 설정
+
+            let data = {categoryRequests:categories}; // 수정한 데이터들을 categoryRequests에 담아 보냄
+            xhr1.send(JSON.stringify(data));
+        }
+    }
     xhr.send();
 });
