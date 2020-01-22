@@ -24,7 +24,7 @@ window.addEventListener("load", function(){
             }
             const itemToFind = arrNumber.find(function(item) {
                 return item === parseInt(depth);
-            })
+            });
             const idx = arrNumber.indexOf(itemToFind);
             if (idx > -1) arrNumber.splice(idx, 1);
             arrNumber.forEach(arrayIndex => {
@@ -34,7 +34,8 @@ window.addEventListener("load", function(){
                         targetTbodyNode.querySelector('tr').remove();
                     }
                 }
-            })
+            });
+            swapData();
         }
         function insert(targetCategories, depth) { //메뉴 넣는 함수
             initCategoryBodyBox(depth);
@@ -46,8 +47,8 @@ window.addEventListener("load", function(){
                 var trs =  cloneNode.querySelectorAll("tr");
                 var categroyNo = targetCategories[i].categoryNo;
                 trs[0].setAttribute( 'categroyNo', categroyNo);
-                tds[0].textContent = targetCategories[i].categoryNo;
-                tds[1].textContent = targetCategories[i].name;
+                tds[1].textContent = targetCategories[i].categoryNo;
+                tds[2].textContent = targetCategories[i].name;
                 targetTbodyNode.appendChild(cloneNode);
             }
             addOnclickCategory(targetTbodyNode, (depth + 1));
@@ -103,7 +104,7 @@ window.addEventListener("load", function(){
             overlay.style.display = 'block';
 
             btns.onclick = function() {
-                nameText.children[1].textContent = pushText.value; //nameText는 this를 받음. this는 e.target.parentElement와 같고
+                nameText.children[2].textContent = pushText.value; //nameText는 this를 받음. this는 e.target.parentElement와 같고
                 //임의로 필요한 (출력할) categoryNo, name값만 가져온게 e.target.parentElement임, nameText.children[1].textContent는 name이 있는 곳임
                 popup.style.display = 'none';
                 overlay.style.display = 'none';
@@ -118,9 +119,35 @@ window.addEventListener("load", function(){
         }
     }
 
+    function swapData() {
+        var swapBtn = document.querySelector(".swap-button");
+        swapBtn.onclick = function (e) {
+
+            var checkBoxes = noticeList.querySelectorAll("input[type='checkbox']:checked"); //체크된 박스만 담아옴
+            console.log("checkBoxes",checkBoxes);
+
+            //잘못된 선택 시 알림
+            if (checkBoxes.length != 2){
+                alert("두 개를 선택하세요.");
+                return;
+            }
+
+            //배열에 노드 넣기
+            var tds = []; //체크된 두 개를 노드를 담을 빈 배열
+            for (var i=0; i<checkBoxes.length; i++) {
+                    tds.push(checkBoxes[i].parentElement.parentElement);//처음 parent하면 <td></td> 다음 parent하면 <tr></tr>
+            }
+            
+            //노드 자리 변경
+            var cloneNode = tds[0].cloneNode(true); //노드0을 복사함
+            tds[1].replaceWith(cloneNode); //노드 0복사본과 노드1을 위치 바꿈
+            tds[0].replaceWith(tds[1]) // 노드1을 노드0과 위치 바꿈
+        }
+    }
+
     function changeData() {
         var changeButton = document.querySelector(".change-button");
-        changeButton.onclick = function(e) {
+        changeButton.onclick = function (e) {
 
             var xhr1 = new XMLHttpRequest();
 
@@ -128,7 +155,7 @@ window.addEventListener("load", function(){
             //GET 방식은 받아올 때, POST방식은 내가 올릴 때. 받아온 api를 수정해서 다시 올려야 하므로 같은 url 입력함.
             xhr1.setRequestHeader("Content-Type", "application/json"); // Header 설정
 
-            let data = {categoryRequests:categories}; // 수정한 데이터들을 categoryRequests에 담아 보냄
+            let data = {categoryRequests: categories}; // 수정한 데이터들을 categoryRequests에 담아 보냄
             xhr1.send(JSON.stringify(data));
         }
     }
